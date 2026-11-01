@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.M TECH - Os Melhores Achadinhos da Shopee</title>
+    <title>J.M TECH - Os Melhores Achadinhos & Ofertas</title>
     <!-- Ícone Personalizado para a aba do navegador (Favicon) -->
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/1055/1055687.png">
     <!-- Bootstrap CSS -->
@@ -15,6 +15,8 @@
         :root {
             --shopee-primary: #ee4d2d;
             --shopee-dark: #d73211;
+            --ml-primary: #ffe600;
+            --ml-blue: #2d3277;
         }
 
         body {
@@ -23,11 +25,10 @@
             color: #333;
         }
 
-        /* Navbar Moderna com duplo clique para abrir o Painel Admin (Discreto) */
+        /* Navbar Moderna */
         .navbar-custom {
             background: linear-gradient(135deg, var(--shopee-primary), var(--shopee-dark));
             box-shadow: 0 4px 12px rgba(238, 77, 45, 0.2);
-            cursor: default;
         }
 
         /* Painel Administrativo Protegido */
@@ -43,25 +44,39 @@
 
         /* Hero Section */
         .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80');
             background-size: cover;
             background-position: center;
             color: white;
             border-radius: 16px;
             padding: 50px 20px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
-        /* Benefícios Rápidos */
-        .benefit-box {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: transform 0.2s;
+        /* Botões de Filtro por Plataforma */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
         }
-        .benefit-box:hover {
-            transform: translateY(-3px);
+
+        .filter-btn {
+            border: none;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            background: #ffffff;
+            color: #555;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #212529;
+            color: #fff;
+            transform: translateY(-2px);
         }
 
         /* Cards de Produtos Modernos */
@@ -85,7 +100,7 @@
         .produto-img-wrapper {
             position: relative;
             overflow: hidden;
-            background-color: #ffffff; /* Fundo limpo para a imagem inteira aparecer */
+            background-color: #ffffff;
             height: 220px;
             display: flex;
             align-items: center;
@@ -96,7 +111,7 @@
         .produto-img-wrapper img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Ajusta a imagem inteira sem cortar */
+            object-fit: contain;
             transition: transform 0.4s ease;
         }
 
@@ -104,7 +119,8 @@
             transform: scale(1.05);
         }
 
-        .badge-desconto {
+        /* Selos de Plataforma */
+        .badge-shopee {
             position: absolute;
             top: 12px;
             left: 12px;
@@ -113,8 +129,23 @@
             font-weight: 700;
             padding: 5px 10px;
             border-radius: 8px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             z-index: 2;
+            box-shadow: 0 2px 5px rgba(238, 77, 45, 0.4);
+        }
+
+        .badge-ml {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--ml-primary);
+            color: var(--ml-blue);
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .badge-frete {
@@ -136,14 +167,20 @@
         }
 
         .preco-atual {
-            color: var(--shopee-primary);
             font-size: 1.4rem;
             font-weight: 800;
         }
 
+        .preco-shopee {
+            color: var(--shopee-primary);
+        }
+
+        .preco-ml {
+            color: var(--ml-blue);
+        }
+
+        /* Botões de Compra Dinâmicos */
         .btn-comprar {
-            background: linear-gradient(135deg, var(--shopee-primary), var(--shopee-dark));
-            color: #fff;
             border: none;
             border-radius: 10px;
             font-weight: 700;
@@ -153,16 +190,31 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 4px 12px rgba(238, 77, 45, 0.3);
             text-decoration: none;
             width: 100%;
+            color: white;
         }
 
-        .btn-comprar:hover {
+        .btn-shopee {
+            background: linear-gradient(135deg, var(--shopee-primary), var(--shopee-dark));
+            box-shadow: 0 4px 12px rgba(238, 77, 45, 0.3);
+        }
+
+        .btn-shopee:hover {
             opacity: 0.95;
-            color: #fff;
-            transform: scale(1.02);
+            color: white;
             box-shadow: 0 6px 16px rgba(238, 77, 45, 0.4);
+        }
+
+        .btn-ml {
+            background: linear-gradient(135deg, #3483fa, var(--ml-blue));
+            box-shadow: 0 4px 12px rgba(52, 131, 250, 0.3);
+        }
+
+        .btn-ml:hover {
+            opacity: 0.95;
+            color: white;
+            box-shadow: 0 6px 16px rgba(52, 131, 250, 0.4);
         }
     </style>
 </head>
@@ -172,9 +224,9 @@
     <nav class="navbar navbar-dark navbar-custom mb-4" ondblclick="toggleAdmin()">
         <div class="container">
             <a class="navbar-brand fw-bold fs-4" href="#">
-                <i class="fa-solid fa-bag-shopping me-2"></i>J.M TECH Achadinhos
+                <i class="fa-solid fa-bag-shopping me-2"></i>J.M TECH Achadinhos & Ofertas
             </a>
-            <span class="text-white small d-none d-md-inline"><i class="fa-solid fa-shield-halved me-1"></i> Ofertas Verificadas da Shopee</span>
+            <span class="text-white small d-none d-md-inline"><i class="fa-solid fa-shield-halved me-1"></i> Ofertas Verificadas</span>
         </div>
     </nav>
 
@@ -182,23 +234,30 @@
         
         <!-- PAINEL ADMINISTRATIVO PROTEGIDO -->
         <div id="adminSection" class="admin-panel">
-            <h4 class="text-dark fw-bold mb-3"><i class="fa-solid fa-gear me-2"></i>Adicionar Novo Produto com Imagem</h4>
+            <h4 class="text-dark fw-bold mb-3"><i class="fa-solid fa-gear me-2"></i>Adicionar Novo Produto</h4>
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label fw-bold small">Título do Produto</label>
-                    <input type="text" id="pTitle" class="form-control" placeholder="Ex: Mini Ventilador Portátil">
+                    <input type="text" id="pTitle" class="form-control" placeholder="Ex: Fone Bluetooth / Smartphone">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold small">Preço</label>
                     <input type="text" id="pPrice" class="form-control" placeholder="Ex: R$ 49,90">
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-bold small">Selecionar Imagem do Produto</label>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold small">Plataforma</label>
+                    <select id="pPlatform" class="form-select">
+                        <option value="shopee">Shopee</option>
+                        <option value="mercadolivre">Mercado Livre</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold small">Selecionar Imagem</label>
                     <input type="file" id="pImageFile" class="form-control" accept="image/*">
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-bold small">Link de Afiliado da Shopee</label>
-                    <input type="text" id="pLink" class="form-control" placeholder="https://s.shopee.com.br/...">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold small">Link de Afiliado / Produto</label>
+                    <input type="text" id="pLink" class="form-control" placeholder="https://...">
                 </div>
                 <div class="col-12">
                     <button class="btn btn-dark fw-bold px-4 py-2" id="btnSave" onclick="addNewProduct()">
@@ -208,41 +267,17 @@
             </div>
         </div>
 
-        <!-- Hero Banner Atraente -->
+        <!-- Hero Banner -->
         <div class="hero-section text-center">
-            <h1 class="fw-bold mb-3">Os Melhores Achadinhos com Desconto!</h1>
-            <p class="lead mb-0 text-light opacity-85">Selecionamos diariamente os produtos mais virais, úteis e com os menores preços da internet para si.</p>
+            <h1 class="fw-bold mb-3">As Melhores Ofertas da Shopee & Mercado Livre!</h1>
+            <p class="lead mb-0 text-light opacity-85">Produtos selecionados diariamente com os melhores preços e entrega garantida.</p>
         </div>
 
-        <!-- Barra de Benefícios -->
-        <div class="row g-3 mb-5 text-center">
-            <div class="col-md-4">
-                <div class="benefit-box">
-                    <i class="fa-solid fa-truck-fast text-danger fs-3 mb-2"></i>
-                    <h6 class="fw-bold mb-1">Achados com Frete Grátis</h6>
-                    <p class="text-muted small mb-0">Opções selecionadas com vantagens de envio.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="benefit-box">
-                    <i class="fa-solid fa-tags text-danger fs-3 mb-2"></i>
-                    <h6 class="fw-bold mb-1">Descontos Reais</h6>
-                    <p class="text-muted small mb-0">Promoções atualizadas em tempo real.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="benefit-box">
-                    <i class="fa-solid fa-lock text-danger fs-3 mb-2"></i>
-                    <h6 class="fw-bold mb-1">Compra 100% Segura</h6>
-                    <p class="text-muted small mb-0">Direto pela plataforma oficial da Shopee.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Título da Seção de Produtos -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="fw-bold text-dark m-0"><i class="fa-solid fa-fire text-danger me-2"></i>Em Destaque</h3>
-            <span class="text-muted small">Atualizado em tempo real</span>
+        <!-- Botões de Filtro por Plataforma -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterProducts('all', this)">Todos os Produtos</button>
+            <button class="filter-btn" onclick="filterProducts('shopee', this)"><i class="fa-solid fa-bag-shopping text-danger me-1"></i> Shopee</button>
+            <button class="filter-btn" onclick="filterProducts('mercadolivre', this)"><i class="fa-solid fa-bolt text-warning me-1"></i> Mercado Livre</button>
         </div>
 
         <!-- Grid de Produtos Dinâmico -->
@@ -254,10 +289,10 @@
         </div>
     </div>
 
-    <!-- Rodapé Completo -->
+    <!-- Rodapé -->
     <footer class="text-center py-4 bg-white border-top mt-5">
         <div class="container">
-            <p class="mb-1 text-muted small">Os preços e a disponibilidade dos produtos estão sujeitos a alterações na Shopee.</p>
+            <p class="mb-1 text-muted small">Os preços e a disponibilidade dos produtos estão sujeitos a alterações nas plataformas.</p>
             <p class="mb-0 text-muted small">&copy; 2026 J.M TECH. Todos os direitos reservados.</p>
         </div>
     </footer>
@@ -281,6 +316,7 @@
         const db = getFirestore(app);
 
         const ADMIN_PASSWORD = "admin123";
+        let allProducts = [];
 
         window.toggleAdmin = function() {
             let senha = prompt("Digite a senha de administrador:");
@@ -295,21 +331,21 @@
         window.addNewProduct = async function() {
             let title = document.getElementById("pTitle").value;
             let price = document.getElementById("pPrice").value;
+            let platform = document.getElementById("pPlatform").value;
             let imageFile = document.getElementById("pImageFile").files[0];
             let link = document.getElementById("pLink").value;
 
             if(!title || !price || !link) {
-                alert("Por favor, preencha o título, o preço e o link de afiliado!");
+                alert("Por favor, preencha o título, o preço e o link!");
                 return;
             }
 
             let btn = document.getElementById("btnSave");
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i>A carregar imagem e salvar...`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i>A carregar e salvar...`;
             btn.disabled = true;
 
             try {
                 let imageUrl = "https://via.placeholder.com/300";
-
                 if (imageFile) {
                     imageUrl = await toBase64(imageFile);
                 }
@@ -317,12 +353,13 @@
                 await addDoc(collection(db, "produtos"), {
                     title: title,
                     price: price,
+                    platform: platform, // 'shopee' ou 'mercadolivre'
                     img: imageUrl,
                     link: link,
                     createdAt: new Date()
                 });
 
-                alert("Produto e imagem salvos na nuvem com sucesso!");
+                alert("Produto salvo com sucesso!");
                 document.getElementById("pTitle").value = "";
                 document.getElementById("pPrice").value = "";
                 document.getElementById("pImageFile").value = "";
@@ -331,7 +368,7 @@
                 loadProducts();
             } catch (e) {
                 console.error("Erro ao adicionar produto: ", e);
-                alert("Erro ao salvar produto. Verifique a conexão.");
+                alert("Erro ao salvar produto.");
             } finally {
                 btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up me-2"></i>Salvar na Nuvem`;
                 btn.disabled = false;
@@ -350,51 +387,80 @@
             try {
                 const q = query(collection(db, "produtos"), orderBy("createdAt", "desc"));
                 const querySnapshot = await getDocs(q);
-                let html = "";
-
-                if (querySnapshot.empty) {
-                    grid.innerHTML = `<div class="col-12 text-center text-muted py-5"><p>Nenhum produto cadastrado ainda.</p></div>`;
-                    return;
-                }
+                allProducts = [];
 
                 querySnapshot.forEach((doc) => {
-                    let p = doc.data();
-                    html += `
-                        <div class="col">
-                            <div class="card produto-card">
-                                <div class="produto-img-wrapper">
-                                    <span class="badge-desconto">OFERTA</span>
-                                    <span class="badge-frete"><i class="fa-solid fa-truck"></i> Frete Grátis</span>
-                                    <img src="${p.img}" alt="${p.title}">
-                                </div>
-                                <div class="card-body d-flex flex-column">
-                                    <div class="mb-1 rating-stars">
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <span class="text-muted ms-1 small">(5.0)</span>
-                                    </div>
-                                    <h5 class="card-title fw-bold text-dark fs-6">${p.title}</h5>
-                                    
-                                    <div class="mb-3 mt-2 mt-auto">
-                                        <span class="preco-atual">${p.price}</span>
-                                    </div>
-
-                                    <a href="${p.link}" target="_blank" class="btn btn-comprar w-100">
-                                        <i class="fa-solid fa-cart-shopping"></i> Comprar na Shopee
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    allProducts.push(doc.data());
                 });
-                grid.innerHTML = html;
+
+                displayProducts(allProducts);
             } catch (e) {
                 console.error("Erro ao carregar produtos: ", e);
-                grid.innerHTML = `<div class="col-12 text-center text-danger"><p>Erro ao carregar os produtos do banco de dados.</p></div>`;
+                grid.innerHTML = `<div class="col-12 text-center text-danger"><p>Erro ao carregar os produtos.</p></div>`;
             }
+        }
+
+        window.filterProducts = function(platform, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            if (platform === 'all') {
+                displayProducts(allProducts);
+            } else {
+                const filtered = allProducts.filter(p => p.platform === platform);
+                displayProducts(filtered);
+            }
+        }
+
+        function displayProducts(products) {
+            let grid = document.getElementById("productGrid");
+            if (products.length === 0) {
+                grid.innerHTML = `<div class="col-12 text-center text-muted py-5"><p>Nenhum produto encontrado nesta categoria.</p></div>`;
+                return;
+            }
+
+            let html = "";
+            products.forEach((p) => {
+                let isML = p.platform === 'mercadolivre';
+                let badgeClass = isML ? 'badge-ml' : 'badge-shopee';
+                let badgeText = isML ? 'Mercado Livre' : 'Shopee';
+                let priceClass = isML ? 'preco-ml' : 'preco-shopee';
+                let btnClass = isML ? 'btn-ml' : 'btn-shopee';
+                let btnText = isML ? 'Ver no Mercado Livre' : 'Comprar na Shopee';
+                let btnIcon = isML ? 'fa-bolt' : 'fa-cart-shopping';
+
+                html += `
+                    <div class="col">
+                        <div class="card produto-card">
+                            <div class="produto-img-wrapper">
+                                <span class="${badgeClass}">${badgeText}</span>
+                                <span class="badge-frete"><i class="fa-solid fa-truck"></i> Envios</span>
+                                <img src="${p.img}" alt="${p.title}">
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <div class="mb-1 rating-stars">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <span class="text-muted ms-1 small">(5.0)</span>
+                                </div>
+                                <h5 class="card-title fw-bold text-dark fs-6">${p.title}</h5>
+                                
+                                <div class="mb-3 mt-2 mt-auto">
+                                    <span class="preco-atual ${priceClass}">${p.price}</span>
+                                </div>
+
+                                <a href="${p.link}" target="_blank" class="btn btn-comprar ${btnClass} w-100">
+                                    <i class="fa-solid ${btnIcon}"></i> ${btnText}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
         }
 
         loadProducts();
