@@ -53,30 +53,59 @@
             margin-bottom: 30px;
         }
 
-        /* Botões de Filtro por Plataforma */
+        /* Botões de Filtro Modernos */
         .filter-buttons {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 35px;
+            gap: 15px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
         }
 
         .filter-btn {
             border: none;
-            padding: 10px 22px;
+            padding: 12px 28px;
             border-radius: 50px;
             font-weight: 600;
+            font-size: 0.95rem;
             background: #ffffff;
-            color: #555;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
+            color: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .filter-btn:hover, .filter-btn.active {
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
             background: #212529;
             color: #fff;
-            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(33, 37, 41, 0.2);
+        }
+
+        /* Títulos das Secções */
+        .category-title {
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .title-shopee {
+            color: var(--shopee-primary);
+            border-color: rgba(238, 77, 45, 0.3);
+        }
+        .title-ml {
+            color: var(--ml-blue);
+            border-color: rgba(45, 50, 119, 0.3);
         }
 
         /* Cards de Produtos Modernos */
@@ -131,7 +160,6 @@
             border-radius: 8px;
             font-size: 0.75rem;
             z-index: 2;
-            box-shadow: 0 2px 5px rgba(238, 77, 45, 0.4);
         }
 
         .badge-ml {
@@ -145,7 +173,6 @@
             border-radius: 8px;
             font-size: 0.75rem;
             z-index: 2;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .badge-frete {
@@ -179,7 +206,7 @@
             color: var(--ml-blue);
         }
 
-        /* Botões de Compra Dinâmicos */
+        /* Botões de Compra */
         .btn-comprar {
             border: none;
             border-radius: 10px;
@@ -203,7 +230,6 @@
         .btn-shopee:hover {
             opacity: 0.95;
             color: white;
-            box-shadow: 0 6px 16px rgba(238, 77, 45, 0.4);
         }
 
         .btn-ml {
@@ -214,7 +240,13 @@
         .btn-ml:hover {
             opacity: 0.95;
             color: white;
-            box-shadow: 0 6px 16px rgba(52, 131, 250, 0.4);
+        }
+
+        /* Controles de Admin nos Cards */
+        .admin-actions {
+            display: none;
+            gap: 5px;
+            margin-top: 8px;
         }
     </style>
 </head>
@@ -234,7 +266,8 @@
         
         <!-- PAINEL ADMINISTRATIVO PROTEGIDO -->
         <div id="adminSection" class="admin-panel">
-            <h4 class="text-dark fw-bold mb-3"><i class="fa-solid fa-gear me-2"></i>Adicionar Novo Produto</h4>
+            <h4 class="text-dark fw-bold mb-3" id="adminFormTitle"><i class="fa-solid fa-gear me-2"></i>Adicionar Novo Produto</h4>
+            <input type="hidden" id="editProductId">
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label fw-bold small">Título do Produto</label>
@@ -245,24 +278,25 @@
                     <input type="text" id="pPrice" class="form-control" placeholder="Ex: R$ 49,90">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold small">Plataforma</label>
+                    <label class="form-label fw-bold small">Categoria / Plataforma</label>
                     <select id="pPlatform" class="form-select">
                         <option value="shopee">Shopee</option>
                         <option value="mercadolivre">Mercado Livre</option>
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-bold small">Selecionar Imagem</label>
+                    <label class="form-label fw-bold small">Selecionar Imagem (Opcional na Edição)</label>
                     <input type="file" id="pImageFile" class="form-control" accept="image/*">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-bold small">Link de Afiliado / Produto</label>
                     <input type="text" id="pLink" class="form-control" placeholder="https://...">
                 </div>
-                <div class="col-12">
-                    <button class="btn btn-dark fw-bold px-4 py-2" id="btnSave" onclick="addNewProduct()">
+                <div class="col-12 d-flex gap-2">
+                    <button class="btn btn-dark fw-bold px-4 py-2" id="btnSave" onclick="saveProduct()">
                         <i class="fa-solid fa-cloud-arrow-up me-2"></i>Salvar na Nuvem
                     </button>
+                    <button class="btn btn-secondary fw-bold px-3 py-2" id="btnCancelEdit" style="display:none;" onclick="cancelEdit()">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -273,20 +307,45 @@
             <p class="lead mb-0 text-light opacity-85">Produtos selecionados diariamente com os melhores preços e entrega garantida.</p>
         </div>
 
-        <!-- Botões de Filtro por Plataforma -->
+        <!-- BOTÕES DE FILTRO POR PLATAFORMA -->
         <div class="filter-buttons">
-            <button class="filter-btn active" onclick="filterProducts('all', this)">Todos os Produtos</button>
-            <button class="filter-btn" onclick="filterProducts('shopee', this)"><i class="fa-solid fa-bag-shopping text-danger me-1"></i> Shopee</button>
-            <button class="filter-btn" onclick="filterProducts('mercadolivre', this)"><i class="fa-solid fa-bolt text-warning me-1"></i> Mercado Livre</button>
+            <button class="filter-btn active" id="btnAll" onclick="filterPlatform('all')">
+                <i class="fa-solid fa-border-all"></i> Todos os Produtos
+            </button>
+            <button class="filter-btn" id="btnShopee" onclick="filterPlatform('shopee')">
+                <i class="fa-solid fa-bag-shopping text-danger"></i> Shopee
+            </button>
+            <button class="filter-btn" id="btnMl" onclick="filterPlatform('mercadolivre')">
+                <i class="fa-solid fa-bolt text-warning"></i> Mercado Livre
+            </button>
         </div>
 
-        <!-- Grid de Produtos Dinâmico -->
-        <div id="productGrid" class="row row-cols-1 row-cols-md-3 g-4 mb-5">
-            <div class="col-12 text-center py-5">
-                <div class="spinner-border text-danger" role="status"></div>
-                <p class="text-muted mt-2">A carregar produtos da nuvem...</p>
+        <!-- SEÇÃO 1: SHOPEE -->
+        <div class="mb-5 platform-section" id="sectionShopee">
+            <h3 class="category-title title-shopee">
+                <i class="fa-solid fa-bag-shopping"></i> Achadinhos da Shopee
+            </h3>
+            <div id="shopeeGrid" class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col-12 text-center py-3">
+                    <div class="spinner-border text-danger" role="status"></div>
+                    <p class="text-muted mt-2">A carregar produtos da Shopee...</p>
+                </div>
             </div>
         </div>
+
+        <!-- SEÇÃO 2: MERCADO LIVRE -->
+        <div class="mb-5 platform-section" id="sectionMl">
+            <h3 class="category-title title-ml">
+                <i class="fa-solid fa-bolt"></i> Ofertas do Mercado Livre
+            </h3>
+            <div id="mlGrid" class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col-12 text-center py-3">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-muted mt-2">A carregar produtos do Mercado Livre...</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Rodapé -->
@@ -300,7 +359,7 @@
     <!-- Firebase SDK (Modular v10) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCXq-LkfGh3rVia9EoeExf3Lrxp6e2o0-4",
@@ -316,19 +375,48 @@
         const db = getFirestore(app);
 
         const ADMIN_PASSWORD = "admin123";
-        let allProducts = [];
+        let isAdminLoggedIn = false;
+        let cachedProducts = [];
+        let currentFilter = 'all';
 
         window.toggleAdmin = function() {
             let senha = prompt("Digite a senha de administrador:");
             if (senha === ADMIN_PASSWORD) {
+                isAdminLoggedIn = true;
                 let panel = document.getElementById("adminSection");
-                panel.style.display = panel.style.display === "block" ? "none" : "block";
+                panel.style.display = "block";
+                alert("Modo Administrador Ativado!");
+                displayProducts(cachedProducts);
             } else if (senha !== null) {
                 alert("Senha incorreta!");
             }
         }
 
-        window.addNewProduct = async function() {
+        window.filterPlatform = function(platform) {
+            currentFilter = platform;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if (platform === 'all') document.getElementById('btnAll').classList.add('active');
+            if (platform === 'shopee') document.getElementById('btnShopee').classList.add('active');
+            if (platform === 'mercadolivre') document.getElementById('btnMl').classList.add('active');
+
+            let secShopee = document.getElementById('sectionShopee');
+            let secMl = document.getElementById('sectionMl');
+
+            if (platform === 'all') {
+                secShopee.style.display = 'block';
+                secMl.style.display = 'block';
+            } else if (platform === 'shopee') {
+                secShopee.style.display = 'block';
+                secMl.style.display = 'none';
+            } else if (platform === 'mercadolivre') {
+                secShopee.style.display = 'none';
+                secMl.style.display = 'block';
+            }
+        }
+
+        window.saveProduct = async function() {
+            let id = document.getElementById("editProductId").value;
             let title = document.getElementById("pTitle").value;
             let price = document.getElementById("pPrice").value;
             let platform = document.getElementById("pPlatform").value;
@@ -341,37 +429,82 @@
             }
 
             let btn = document.getElementById("btnSave");
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i>A carregar e salvar...`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i>A processar...`;
             btn.disabled = true;
 
             try {
-                let imageUrl = "https://via.placeholder.com/300";
-                if (imageFile) {
-                    imageUrl = await toBase64(imageFile);
+                if (id) {
+                    let updateData = { title, price, platform, link };
+                    if (imageFile) {
+                        updateData.img = await toBase64(imageFile);
+                    }
+                    await updateDoc(doc(db, "produtos", id), updateData);
+                    alert("Produto atualizado com sucesso!");
+                    cancelEdit();
+                } else {
+                    let imageUrl = "https://via.placeholder.com/300";
+                    if (imageFile) {
+                        imageUrl = await toBase64(imageFile);
+                    }
+                    await addDoc(collection(db, "produtos"), {
+                        title, price, platform, img: imageUrl, link, createdAt: new Date()
+                    });
+                    alert("Produto salvo com sucesso!");
+                    document.getElementById("pTitle").value = "";
+                    document.getElementById("pPrice").value = "";
+                    document.getElementById("pImageFile").value = "";
+                    document.getElementById("pLink").value = "";
                 }
-
-                await addDoc(collection(db, "produtos"), {
-                    title: title,
-                    price: price,
-                    platform: platform, // 'shopee' ou 'mercadolivre'
-                    img: imageUrl,
-                    link: link,
-                    createdAt: new Date()
-                });
-
-                alert("Produto salvo com sucesso!");
-                document.getElementById("pTitle").value = "";
-                document.getElementById("pPrice").value = "";
-                document.getElementById("pImageFile").value = "";
-                document.getElementById("pLink").value = "";
-                
                 loadProducts();
             } catch (e) {
-                console.error("Erro ao adicionar produto: ", e);
+                console.error("Erro ao salvar: ", e);
                 alert("Erro ao salvar produto.");
             } finally {
                 btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up me-2"></i>Salvar na Nuvem`;
                 btn.disabled = false;
+            }
+        }
+
+        window.editProduct = async function(id) {
+            const docSnap = await getDoc(doc(db, "produtos", id));
+            if (docSnap.exists()) {
+                let p = docSnap.data();
+                document.getElementById("editProductId").value = id;
+                document.getElementById("pTitle").value = p.title;
+                document.getElementById("pPrice").value = p.price;
+                document.getElementById("pPlatform").value = p.platform;
+                document.getElementById("pLink").value = p.link;
+                
+                document.getElementById("adminFormTitle").innerHTML = `<i class="fa-solid fa-pen-to-square me-2"></i>Editar Produto`;
+                document.getElementById("btnSave").innerHTML = `<i class="fa-solid fa-check me-2"></i>Atualizar Produto`;
+                document.getElementById("btnCancelEdit").style.display = "inline-block";
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.getElementById("adminSection").style.display = "block";
+            }
+        }
+
+        window.cancelEdit = function() {
+            document.getElementById("editProductId").value = "";
+            document.getElementById("pTitle").value = "";
+            document.getElementById("pPrice").value = "";
+            document.getElementById("pImageFile").value = "";
+            document.getElementById("pLink").value = "";
+            document.getElementById("adminFormTitle").innerHTML = `<i class="fa-solid fa-gear me-2"></i>Adicionar Novo Produto`;
+            document.getElementById("btnSave").innerHTML = `<i class="fa-solid fa-cloud-arrow-up me-2"></i>Salvar na Nuvem`;
+            document.getElementById("btnCancelEdit").style.display = "none";
+        }
+
+        window.deleteProduct = async function(id) {
+            if (confirm("Tem certeza que deseja excluir este produto?")) {
+                try {
+                    await deleteDoc(doc(db, "produtos", id));
+                    alert("Produto excluído com sucesso!");
+                    loadProducts();
+                } catch (e) {
+                    console.error("Erro ao excluir: ", e);
+                    alert("Erro ao excluir produto.");
+                }
             }
         }
 
@@ -383,58 +516,52 @@
         });
 
         async function loadProducts() {
-            let grid = document.getElementById("productGrid");
             try {
                 const q = query(collection(db, "produtos"), orderBy("createdAt", "desc"));
                 const querySnapshot = await getDocs(q);
-                allProducts = [];
+                cachedProducts = [];
 
-                querySnapshot.forEach((doc) => {
-                    allProducts.push(doc.data());
+                querySnapshot.forEach((docSnap) => {
+                    let p = docSnap.data();
+                    p.id = docSnap.id;
+                    cachedProducts.push(p);
                 });
 
-                displayProducts(allProducts);
+                displayProducts(cachedProducts);
             } catch (e) {
                 console.error("Erro ao carregar produtos: ", e);
-                grid.innerHTML = `<div class="col-12 text-center text-danger"><p>Erro ao carregar os produtos.</p></div>`;
-            }
-        }
-
-        window.filterProducts = function(platform, btnElement) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-
-            if (platform === 'all') {
-                displayProducts(allProducts);
-            } else {
-                const filtered = allProducts.filter(p => p.platform === platform);
-                displayProducts(filtered);
             }
         }
 
         function displayProducts(products) {
-            let grid = document.getElementById("productGrid");
-            if (products.length === 0) {
-                grid.innerHTML = `<div class="col-12 text-center text-muted py-5"><p>Nenhum produto encontrado nesta categoria.</p></div>`;
-                return;
-            }
+            let shopeeGrid = document.getElementById("shopeeGrid");
+            let mlGrid = document.getElementById("mlGrid");
 
-            let html = "";
+            let shopeeHtml = "";
+            let mlHtml = "";
+            let shopeeCount = 0;
+            let mlCount = 0;
+
             products.forEach((p) => {
                 let isML = p.platform === 'mercadolivre';
-                let badgeClass = isML ? 'badge-ml' : 'badge-shopee';
-                let badgeText = isML ? 'Mercado Livre' : 'Shopee';
-                let priceClass = isML ? 'preco-ml' : 'preco-shopee';
-                let btnClass = isML ? 'btn-ml' : 'btn-shopee';
-                let btnText = isML ? 'Ver no Mercado Livre' : 'Comprar na Shopee';
-                let btnIcon = isML ? 'fa-bolt' : 'fa-cart-shopping';
 
-                html += `
+                let adminButtonsHtml = isAdminLoggedIn ? `
+                    <div class="admin-actions" style="display: flex;">
+                        <button class="btn btn-sm btn-warning fw-bold flex-grow-1" onclick="editProduct('${p.id}')">
+                            <i class="fa-solid fa-pen"></i> Editar
+                        </button>
+                        <button class="btn btn-sm btn-danger fw-bold flex-grow-1" onclick="deleteProduct('${p.id}')">
+                            <i class="fa-solid fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                ` : '';
+
+                let cardHtml = `
                     <div class="col">
                         <div class="card produto-card">
                             <div class="produto-img-wrapper">
-                                <span class="${badgeClass}">${badgeText}</span>
-                                <span class="badge-frete"><i class="fa-solid fa-truck"></i> Envios</span>
+                                <span class="${isML ? 'badge-ml' : 'badge-shopee'}">${isML ? 'Mercado Livre' : 'Shopee'}</span>
+                                <span class="badge-frete"><i class="fa-solid fa-truck"></i> Frete</span>
                                 <img src="${p.img}" alt="${p.title}">
                             </div>
                             <div class="card-body d-flex flex-column">
@@ -448,19 +575,31 @@
                                 </div>
                                 <h5 class="card-title fw-bold text-dark fs-6">${p.title}</h5>
                                 
-                                <div class="mb-3 mt-2 mt-auto">
-                                    <span class="preco-atual ${priceClass}">${p.price}</span>
+                                <div class="mb-2 mt-2 mt-auto">
+                                    <span class="preco-atual ${isML ? 'preco-ml' : 'preco-shopee'}">${p.price}</span>
                                 </div>
 
-                                <a href="${p.link}" target="_blank" class="btn btn-comprar ${btnClass} w-100">
-                                    <i class="fa-solid ${btnIcon}"></i> ${btnText}
+                                <a href="${p.link}" target="_blank" class="btn btn-comprar ${isML ? 'btn-ml' : 'btn-shopee'} w-100 mb-2">
+                                    <i class="fa-solid ${isML ? 'fa-bolt' : 'fa-cart-shopping'}"></i> ${isML ? 'Ver no Mercado Livre' : 'Comprar na Shopee'}
                                 </a>
+
+                                ${adminButtonsHtml}
                             </div>
                         </div>
                     </div>
                 `;
+
+                if (isML) {
+                    mlHtml += cardHtml;
+                    mlCount++;
+                } else {
+                    shopeeHtml += cardHtml;
+                    shopeeCount++;
+                }
             });
-            grid.innerHTML = html;
+
+            shopeeGrid.innerHTML = shopeeCount > 0 ? shopeeHtml : `<div class="col-12 text-center text-muted py-3"><p>Nenhum produto da Shopee cadastrado.</p></div>`;
+            mlGrid.innerHTML = mlCount > 0 ? mlHtml : `<div class="col-12 text-center text-muted py-3"><p>Nenhum produto do Mercado Livre cadastrado.</p></div>`;
         }
 
         loadProducts();
